@@ -1,0 +1,15 @@
+[TRÌNH DUYỆT]                                     [SERVER]
+   |
+   |--- 1. Đọc file index.html
+   |    (Gặp thẻ <link href="/css/style.css">)
+   |
+   |--- 2. Gửi GET /css/style.css --------------> [ResourceHttpRequestHandler]
+   |                                                     |
+   |                                              (Spring Boot quy định sẵn các thư mục)
+   |                                              - /static
+   |                                              - /public
+   |                                              - /resources
+   |                                                     |
+   |                                              (Tìm thấy file style.css trong /static/css)
+   |                                                     |
+   |<-- 3. Trả về nội dung file CSS -------------+

@@ -1,0 +1,5 @@
+Luồng chính: Login, CRUD Dự án/Blog/Skill, API.
+Luồng tương tác: Comment, Contact, Duyệt bài.
+Luồng tiện ích: Search, Excel, i18n, Dashboard.
+Luồng ngầm: Scheduler, Logging, Tracking.
+Luồng vi mô (Vừa bổ sung): Error, Validation, Remember Me, Static Resources.

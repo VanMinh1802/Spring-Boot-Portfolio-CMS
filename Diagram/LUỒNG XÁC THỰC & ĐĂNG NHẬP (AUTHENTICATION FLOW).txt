@@ -1,0 +1,19 @@
+[TRÌNH DUYỆT]                                     [SERVER - SPRING BOOT]
+      |
+      |--- 1. Gửi User/Pass (POST /login) --------> [Security Filter Chain] (Bảo vệ)
+      |                                                     |
+      |                                           (Chặn lại, gọi UserDetailsService)
+      |                                                     |
+      |                                           [UserDetailsServiceImpl]
+      |                                                     |
+      |                                           (Gọi UserRepository tìm user "admin")
+      |                                                     |
+      |                                           [DATABASE (Bảng users)]
+      |                                                     |
+      |                                           (Trả về thông tin User + Pass đã mã hóa)
+      |                                                     |
+      |                                           [PasswordEncoder] (So sánh Pass nhập vs Pass DB)
+      |                                                     |
+      |<-- 2. Thành công (Tạo Session) ------------- (Nếu Khớp)
+      |
+      |<-- 3. Thất bại (Báo lỗi) ------------------- (Nếu Sai)

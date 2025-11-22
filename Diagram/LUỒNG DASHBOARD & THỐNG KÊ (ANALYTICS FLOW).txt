@@ -1,0 +1,17 @@
+[ADMIN]                                           [SERVER]
+   |
+   |--- 1. Vào Dashboard (GET) -----------------> [DashboardController]
+   |                                                     |
+   |                                      +------+-------+-------+-------+
+   |                                      |      |       |       |       |
+   |                                   [Repo]  [Repo]  [Repo]  [Repo]  [Actuator]
+   |                                   (Proj)  (Blog)  (Msg)   (Visit) (Uptime)
+   |                                      |      |       |       |       |
+   |                                   count() count() count() count() (Tính toán)
+   |                                      |      |       |       |       |
+   |                                      +------+-------+-------+-------+
+   |                                                     |
+   |                                              (Đóng gói vào Model)
+   |                                                     |
+   |<-- 2. Trả về HTML + JS Chart -----------------------+
+        (Trình duyệt vẽ biểu đồ từ số liệu này)

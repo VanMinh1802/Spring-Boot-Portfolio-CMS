@@ -1,0 +1,19 @@
+[APP MOBILE / POSTMAN]                            [SERVER]
+         |
+         |--- 1. GET /api/v1/projects -----------> [Security Filter Chain]
+         |                                                |
+         |                                         (Check quyền: permitAll -> OK)
+         |                                                |
+         |                                         [ProjectApiController] (@RestController)
+         |                                                |
+         |                                         [ProjectService]
+         |                                                |
+         |                                         [ProjectRepository] <-> [DB]
+         |                                                |
+         |                                         (Lấy List<Project> Entity)
+         |                                                |
+         |                                         [Jackson Library] (Tự động có sẵn)
+         |                                                |
+         |                                         (Biến Object Java -> Chuỗi JSON)
+         |                                                |
+         |<-- 2. Trả về JSON: [{"id":1...}] ------+

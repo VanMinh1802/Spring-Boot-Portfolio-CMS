@@ -1,0 +1,14 @@
+[ADMIN]                                           [CONTROLLER]
+   |
+   |--- 1. Submit Form (Title = Rỗng) ----------> [Nhận DTO + @Valid]
+   |                                                     |
+   |                                              (Kiểm tra các luật: @NotEmpty, @Size...)
+   |                                                     |
+   |                                              [BindingResult] (Sổ ghi lỗi)
+   |                                                     |
+   |                                          +----(Có lỗi?)----+
+   |                                          |                 |
+   |                                        [CÓ]             [KHÔNG]
+   |                                          |                 |
+   |<-- 2. Trả lại Form cũ + Dòng báo lỗi ----+         (Đi tiếp vào Service)
+        (Input đỏ, hiện text "Không được để trống")

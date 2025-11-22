@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Quản lý Kỹ năng</title>
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <style>
+            :root {
+                --bg-color: #f8f9fa;
+                --text-color: #212529;
+                --card-bg: #ffffff;
+            }
+            [data-theme="dark"] {
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --card-bg: #1e1e1e;
+            }
+            [data-theme="dark"] .form-control {
+                background-color: #2c3034;
+                border-color: #495057;
+                color: #fff;
+            }
+            [data-theme="dark"] .table {
+                color: #e0e0e0;
+                border-color: #373b3e;
+            }
+            [data-theme="dark"] .table-light th {
+                background-color: #2c3034;
+                color: #e0e0e0;
+                border-color: #373b3e;
+            }
+
+            body {
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                font-family: sans-serif;
+                transition: 0.3s;
+            }
+            .card {
+                background-color: var(--card-bg);
+                color: var(--text-color);
+                border: none;
+            }
+        </style>
+    </head>
+    <body class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Quản lý Kỹ năng</h2>
+            <a th:href="@{/admin/dashboard}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Dashboard
+            </a>
+        </div>
+
+        <div class="row">
+            <!-- CỘT TRÁI: FORM THÊM -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">Thêm Kỹ năng</div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/skills/save}" th:object="${newSkill}" method="POST">
+                            <div class="mb-3">
+                                <label class="form-label">Tên Kỹ năng</label>
+                                <input type="text" th:field="*{name}" class="form-control" placeholder="VD: Java" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Thành thạo (%)</label>
+                                <input type="number" th:field="*{level}" class="form-control" min="1" max="100" placeholder="VD: 80" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Lưu lại</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: DANH SÁCH -->
+            <div class="col-md-8">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tên</th>
+                            <th>Mức độ</th>
+                            <th style="width: 100px;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="skill : ${skills}">
+                            <td th:text="${skill.name}" class="fw-bold"></td>
+                            <td>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-success"
+                                         th:style="'width: ' + ${skill.level} + '%'"
+                                         th:text="${skill.level} + '%'"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/admin/skills/delete/{id}(id=${skill.id})}"
+                                   class="btn btn-danger btn-sm"
+                                   th:data-name="${skill.name}"
+                                   onclick="confirmDelete(event, this)">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            if (localStorage.getItem('theme') === 'dark')
+                document.body.setAttribute('data-theme', 'dark');
+
+            function confirmDelete(event, element) {
+                event.preventDefault();
+                const deleteUrl = element.getAttribute('href');
+                const itemName = element.getAttribute('data-name');
+                Swal.fire({
+                    title: 'Xóa kỹ năng?',
+                    text: "Bạn muốn xóa: " + itemName,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Xóa'
+                }).then((result) => {
+                    if (result.isConfirmed)
+                        window.location.href = deleteUrl;
+                })
+            }
+        </script>
+    </body>
+</html>

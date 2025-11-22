@@ -1,0 +1,19 @@
+[TRÌNH DUYỆT]                                     [SERVER]
+   |
+   |--- 1. Đăng nhập (Tích "Nhớ tôi") ----------> [Login Success Handler]
+   |                                                     |
+   |                                              (Tạo một Token mã hóa đặc biệt)
+   |                                                     |
+   |<-- 2. Trả về Cookie: "remember-me" --------- (Lưu Token này vào Database/Memory)
+   |
+   |    (Tắt máy tính -> Mở lại -> Vào web)
+   |
+   |--- 3. Gửi Request (Kèm Cookie) ------------> [RememberMeAuthenticationFilter]
+   |                                                     |
+   |                                              (Đọc Cookie "remember-me")
+   |                                                     |
+   |                                              (Giải mã -> Tìm ra là user "admin")
+   |                                                     |
+   |                                              (Tự động tạo Session mới)
+   |                                                     |
+   |<-- 4. Đăng nhập thành công (Vào thẳng) ------+

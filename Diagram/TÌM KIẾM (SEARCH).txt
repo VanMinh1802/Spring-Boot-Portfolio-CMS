@@ -1,0 +1,9 @@
+[KHÁCH] --- (Gõ "Java" + Enter) ---> [Controller]
+                                          |
+                                     [Service]
+                                          |
+                                     [Repository]
+                                          |
+                                     [DB: SELECT * FROM blog WHERE title LIKE '%Java%']
+                                          |
+[KHÁCH] <--- (List bài viết) ------------+

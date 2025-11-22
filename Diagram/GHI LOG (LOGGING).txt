@@ -1,0 +1,8 @@
+[MỌI HOẠT ĐỘNG] (Lỗi, Đăng nhập, Xem trang...)
+      |
+      +---> [Logback Framework]
+                  |
+          +-------+-------+
+          |               |
+     [Console]      [File .log]
+    (Hiện ngay)    (Lưu ổ cứng) -> (Tự cắt file khi quá lớn/qua ngày mới)

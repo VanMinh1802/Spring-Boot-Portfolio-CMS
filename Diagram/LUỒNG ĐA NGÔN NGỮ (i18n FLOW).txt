@@ -1,0 +1,15 @@
+[TRÌNH DUYỆT]                                     [SERVER]
+      |
+      |--- 1. Bấm cờ Mỹ (?lang=en) -------------> [LocaleChangeInterceptor] (Bộ chặn)
+      |                                                     |
+      |                                           (Phát hiện tham số 'lang')
+      |                                                     |
+      |                                           [LocaleResolver]
+      |                                           (Lưu 'en' vào Session/Cookie của người dùng)
+      |                                                     |
+      |                                           [Controller] -> [View (Thymeleaf)]
+      |                                                     |
+      |                                           [ResourceBundle] (Kho từ điển)
+      |                                           (Đọc file messages.properties)
+      |                                                     |
+      |<-- 2. Trả về HTML (Chữ tiếng Anh) --------(Thay thế #{menu.home} = "Home")

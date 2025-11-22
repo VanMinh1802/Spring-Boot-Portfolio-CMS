@@ -1,0 +1,22 @@
+[ADMIN]                                           [SERVER]
+   |
+   |--- 1. Điền Form + Chọn Ảnh (POST) ---------> [PortfolioWebController]
+   |                                                     |
+   |                                              (Nhận MultipartFile & ProjectDto)
+   |                                                     |
+   |                                         [FileUploadUtil / CloudinaryService]
+   |                                         /           \
+   |                                (Lưu file vào Ổ D:)   (Trả về link: "/uploads/anh.jpg")
+   |                                         \           /
+   |                                          \         /
+   |                                      (Gán Link vào DTO)
+   |                                              |
+   |                                      [ProjectServiceImpl]
+   |                                              |
+   |                                      (Chuyển DTO -> Entity Project)
+   |                                              |
+   |                                      [ProjectRepository]
+   |                                              |
+   |                                      (Lưu Entity xuống DB)
+   |                                              |
+   |<-- 2. Redirect về trang danh sách -----------+

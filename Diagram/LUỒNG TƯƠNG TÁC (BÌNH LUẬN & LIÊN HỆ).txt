@@ -1,0 +1,21 @@
+[KHÁCH]                  [SERVER]                                      [ADMIN]
+   |                        |                                             |
+   |-- 1. Gửi Comment ----> [BlogController]                              |
+   |                        |                                             |
+   |                  (Set status = PENDING)                              |
+   |                        |                                             |
+   |                  [CommentRepository] -> [DB]                         |
+   |                        |                                             |
+   |<-- 2. "Chờ duyệt" -----+                                             |
+                                                                          |
+                                                                  3. Vào trang QL Bình luận
+                                                                          |
+                                                                  [CommentAdminController]
+                                                                          |
+                                                                  (Lấy list comment từ DB)
+                                                                          |
+                                                                  4. Bấm "DUYỆT"
+                                                                          |
+                                                                  (Update status = APPROVED)
+                                                                          |
+   |<-- 5. Comment hiện ra -----------------------------------------------+

@@ -1,0 +1,28 @@
+[ADMIN]                                           [SERVER]
+   |
+   |-- 1. Vào trang Hồ sơ (GET) ----------------> [PortfolioWebController]
+   |                                                     |
+   |                                              (Lấy User từ DB đưa lên Form)
+   |
+   |-- 2. Sửa tên/ảnh -> Bấm LƯU (POST) --------> [PortfolioWebController]
+   |                                                     |
+   |                                              (Nhận dữ liệu từ Form)
+   |                                                     |
+   |                                              [UserRepository] -> [UPDATE users SET...]
+   |
+   |-- 3. Đổi Mật Khẩu (POST) ------------------> [PortfolioWebController]
+   |      (Gửi: Pass cũ, Pass mới)                       |
+   |                                              (Lấy Pass Hash trong DB ra)
+   |                                                     |
+   |                                              [PasswordEncoder]
+   |                                              (So sánh: Pass cũ nhập vào VS Pass Hash DB)
+   |                                                     |
+   |                                      +-------(Khớp?)-------+
+   |                                      |                     |
+   |                                    [ĐÚNG]                [SAI]
+   |                                      |                     |
+   |                              (Mã hóa Pass mới)       (Trả về lỗi: "Sai mật khẩu")
+   |                                      |
+   |                              [UserRepository.save]
+   |                                      |
+   |<-- 4. Thông báo thành công ----------+

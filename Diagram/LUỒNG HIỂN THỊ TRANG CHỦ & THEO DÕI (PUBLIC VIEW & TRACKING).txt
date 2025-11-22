@@ -1,0 +1,15 @@
+[KHÁCH]                                           [SERVER]
+   |
+   |--- 1. Truy cập trang chủ (GET /) ----------> [VisitorInterceptor] (Trạm thu phí)
+   |                                                     |
+   |                                              (Lấy IP, User-Agent -> Gọi Repo lưu vào DB)
+   |                                                     |
+   |                                              [PortfolioWebController]
+   |                                                     |
+   |                                              (Gọi Service lấy Projects, Skills, Profile)
+   |                                                     |
+   |                                              [Repositories] <----> [DATABASE]
+   |                                                     |
+   |                                              (Đóng gói dữ liệu vào Model)
+   |                                                     |
+   |<-- 2. Trả về HTML (Thymeleaf render) ------- [View Resolver]

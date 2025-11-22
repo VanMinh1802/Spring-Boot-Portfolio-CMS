@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 1. Định nghĩa đường dẫn lưu file log -->
+    <!-- Log sẽ nằm trong thư mục logs ngay tại thư mục dự án -->
+    <property name="LOGS" value="./logs" />
+
+    <!-- 2. Cấu hình in ra màn hình Console (Giữ nguyên màu sắc) -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!-- 3. Cấu hình ghi ra File -->
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/my-portfolio.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+
+        <!-- Quy tắc cắt file: Mỗi ngày 1 file, hoặc file > 10MB thì cắt -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Tên file lưu trữ: logs/archived/2025-11-21/portfolio.log -->
+            <fileNamePattern>${LOGS}/archived/%d{yyyy-MM-dd}/portfolio-%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Giữ log trong 30 ngày, sau đó tự xóa -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 4. Áp dụng cấu hình -->
+    <!-- Mức độ INFO trở lên (INFO, WARN, ERROR) sẽ được ghi lại -->
+    <root level="info">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </root>
+
+</configuration>

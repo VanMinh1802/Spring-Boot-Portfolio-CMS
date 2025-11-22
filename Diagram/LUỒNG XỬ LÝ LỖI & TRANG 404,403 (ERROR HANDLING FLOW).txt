@@ -1,0 +1,18 @@
+[KHÁCH]                                           [SERVER]
+   |
+   |--- 1. Gửi Request (GET /abcxyz) -----------> [DispatcherServlet] (Bộ điều phối)
+   |                                                     |
+   |                                              (Tìm trong Controller xem có ai map /abcxyz không?)
+   |                                                     |
+   |                                              [KHÔNG TÌM THẤY] -> Ném lỗi 404
+   |                                                     |
+   |                                              [BasicErrorController] (Của Spring Boot)
+   |                                                     |
+   |                                              (Tìm trong folder: /templates/error/)
+   |                                                     |
+   |                                              (Thấy file 404.html?)
+   |                                                     |
+   |                                          +-----(CÓ)-------(KHÔNG)-----+
+   |                                          |                            |
+   |<-- 2. Trả về trang lỗi đẹp --------------+                  [Whitelabel Error Page]
+        (Giao diện 404 bạn thiết kế)                             (Trang trắng mặc định)

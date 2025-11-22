@@ -1,0 +1,7 @@
+[SERVER CLOCK] (Đồng hồ máy chủ)
+      |
+      |--- (Đúng 12:00 PM) ---> [ScheduledTasks]
+                                      |
+                                (Gọi Repository đếm Visitor)
+                                      |
+                                [Logger] -> (Ghi vào file .log)
