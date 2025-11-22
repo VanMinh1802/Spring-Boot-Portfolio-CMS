@@ -13,11 +13,13 @@
 ## 📸 Screenshots (Demo)
 
 ### 1. Trang chủ (Khách xem)
-*(Bạn hãy chụp ảnh trang chủ web của bạn rồi dán link ảnh vào đây, hoặc kéo thả ảnh vào trình soạn thảo GitHub)*
-![Home Page](link_anh_trang_chu)
+![User Home Page](https://github.com/VanMinh1802/Spring-Boot-Portfolio-CMS/blob/main/user-page.png?raw=true)
 
-### 2. Admin Dashboard (Thống kê & Quản trị)
-![Admin Dashboard](link_anh_dashboard)
+### 2. Trang chủ (Admin xem)
+![Admin Home Page](https://github.com/VanMinh1802/Spring-Boot-Portfolio-CMS/blob/main/admin-page.png?raw=true)
+
+### 3. Admin Dashboard (Thống kê & Quản trị)
+![Admin Dashboard](https://github.com/VanMinh1802/Spring-Boot-Portfolio-CMS/blob/main/dashboard.png?raw=true)
 
 ---
 
