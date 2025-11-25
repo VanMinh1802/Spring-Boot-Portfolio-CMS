@@ -30,6 +30,22 @@
                 color: var(--text-color);
                 border: none;
             }
+
+            /* 1. Ép tiêu đề bài viết và link thành màu trắng sáng */
+            [data-theme="dark"] .card-title,
+            [data-theme="dark"] .card-title a {
+                color: #f8f9fa !important;
+            }
+
+            /* 2. Ép dòng chữ mờ (text-muted) thành màu xám sáng cho dễ đọc */
+            [data-theme="dark"] .text-muted {
+                color: #adb5bd !important;
+            }
+
+            /* 3. Ép nội dung mô tả thành màu trắng */
+            [data-theme="dark"] .card-text {
+                color: #e0e0e0 !important;
+            }
         </style>
     </head>
     <body class="container mt-4">

@@ -4,7 +4,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Blog Cá Nhân</title>
+        <!-- SỬA: Tiêu đề động theo ngôn ngữ -->
+        <title th:text="#{menu.blog} + ' - My Portfolio'">Blog</title>
         <link rel="icon" type="image/png" href="/favicon.png">
 
         <!-- 1. Thư viện CSS -->
@@ -56,6 +57,32 @@
             [data-theme="dark"] .form-control::placeholder {
                 color: #adb5bd;
             }
+
+            /* Link tiêu đề bài viết */
+            .blog-title-link {
+                color: var(--text-color);
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+            .blog-title-link:hover {
+                color: #0d6efd; /* Màu xanh bootstrap */
+            }
+
+            /* 1. Ép tiêu đề bài viết và link thành màu trắng sáng */
+            [data-theme="dark"] .card-title,
+            [data-theme="dark"] .card-title a {
+                color: #f8f9fa !important;
+            }
+
+            /* 2. Ép dòng chữ mờ (text-muted) thành màu xám sáng cho dễ đọc */
+            [data-theme="dark"] .text-muted {
+                color: #adb5bd !important;
+            }
+
+            /* 3. Ép nội dung mô tả thành màu trắng */
+            [data-theme="dark"] .card-text {
+                color: #e0e0e0 !important;
+            }
         </style>
     </head>
     <body class="d-flex flex-column min-vh-100">
@@ -74,19 +101,33 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="ms-auto d-flex gap-2 align-items-center mt-3 mt-lg-0">
-                        <a th:href="@{/}" class="btn btn-outline-light btn-sm border-0">Trang chủ</a>
+
+                        <!-- THÊM: Chuyển đổi ngôn ngữ -->
+                        <div class="me-2">
+                            <a href="?lang=vi" class="text-decoration-none me-2">🇻🇳</a>
+                            <a href="?lang=en" class="text-decoration-none">🇺🇸</a>
+                        </div>
+
+                        <!-- SỬA: Text Trang chủ -->
+                        <a th:href="@{/}" class="btn btn-outline-light btn-sm border-0" th:text="#{menu.home}">Trang chủ</a>
 
                         <!-- Nút Dark Mode -->
                         <button class="btn btn-outline-light btn-sm border-0 me-2" id="theme-toggle" title="Đổi giao diện">
                             <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
                         </button>
 
-                        <!-- Logic Đăng nhập/Admin (Giống index.html) -->
+                        <!-- Logic Đăng nhập/Admin -->
                         <div sec:authorize="!isAuthenticated()">
-                            <a th:href="@{/login}" class="btn btn-outline-light btn-sm"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+                            <!-- SỬA: Text Đăng nhập -->
+                            <a th:href="@{/login}" class="btn btn-outline-light btn-sm">
+                                <i class="bi bi-box-arrow-in-right"></i> <span th:text="#{menu.login}">Đăng nhập</span>
+                            </a>
                         </div>
                         <div sec:authorize="isAuthenticated()" class="d-flex gap-2">
-                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" class="btn btn-warning btn-sm"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                            <!-- SỬA: Text Dashboard -->
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-speedometer2"></i> <span th:text="#{menu.dashboard}">Dashboard</span>
+                            </a>
                             <form th:action="@{/logout}" method="POST" class="m-0">
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-power"></i></button>
                             </form>
@@ -96,18 +137,22 @@
             </div>
         </nav>
 
-        <!-- Header -->
+        <!-- Header Content -->
         <div class="container mt-5">
             <div class="text-center mb-5">
-                <h1 class="fw-bold" data-aos="fade-down">Chia sẻ kiến thức</h1>
-                <p class="text-muted">Nơi tôi viết về Lập trình, Công nghệ và Cuộc sống</p>
+                <!-- SỬA: Tiêu đề Blog từ file properties -->
+                <h1 class="fw-bold" data-aos="fade-down" th:text="#{blog.title}">Chia sẻ kiến thức</h1>
+                <p class="text-muted" th:text="#{blog.subtitle}">Nơi tôi viết về Lập trình...</p>
             </div>
 
             <!-- Thanh tìm kiếm -->
             <div class="row justify-content-center mb-5" data-aos="fade-up">
                 <div class="col-md-6">
                     <form action="/blog" method="get" class="d-flex shadow-sm rounded-pill overflow-hidden border" style="background-color: var(--card-bg);">
-                        <input type="text" name="keyword" th:value="${keyword}" class="form-control border-0 shadow-none px-4 py-3" placeholder="Tìm kiếm bài viết...">
+                        <!-- SỬA: Placeholder tìm kiếm -->
+                        <input type="text" name="keyword" th:value="${keyword}"
+                               class="form-control border-0 shadow-none px-4 py-3"
+                               th:placeholder="#{blog.search}">
                         <button type="submit" class="btn border-0 px-4 text-primary"><i class="bi bi-search"></i></button>
                     </form>
                 </div>
@@ -115,8 +160,9 @@
 
             <!-- Danh sách bài viết -->
             <div class="row">
+                <!-- SỬA: Thông báo trống -->
                 <div th:if="${#lists.isEmpty(posts)}" class="col-12 text-center">
-                    <p class="text-muted">Chưa có bài viết nào được đăng.</p>
+                    <p class="text-muted" th:text="#{blog.empty}">Chưa có bài viết nào được đăng.</p>
                 </div>
 
                 <div class="col-md-4 mb-4" th:each="post : ${posts}" data-aos="zoom-in">
@@ -130,10 +176,14 @@
                                 <i class="bi bi-calendar3"></i> <span th:text="${#temporals.format(post.createdTime, 'dd-MM-yyyy')}"></span>
                             </div>
                             <h5 class="card-title fw-bold">
-                                <a th:href="@{/blog/{id}(id=${post.id})}" class="text-decoration-none" style="color: var(--text-color);" th:text="${post.title}">Tiêu đề</a>
+                                <a th:href="@{/blog/{id}(id=${post.id})}" class="blog-title-link" th:text="${post.title}">Tiêu đề</a>
                             </h5>
                             <p class="card-text text-muted flex-grow-1" th:text="${post.summary}">Tóm tắt...</p>
-                            <a th:href="@{/blog/{id}(id=${post.id})}" class="btn btn-outline-primary mt-3">Đọc tiếp →</a>
+
+                            <!-- SỬA: Nút Đọc tiếp -->
+                            <a th:href="@{/blog/{id}(id=${post.id})}" class="btn btn-outline-primary mt-3">
+                                <span th:text="#{blog.readmore}">Đọc tiếp</span> &rarr;
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -156,10 +206,7 @@
         <script>
             AOS.init({duration: 1000, once: true});
 
-            // Logic Back to Top & Preloader & Dark Mode (Giống index.html)
-            // ... (Bạn copy đoạn script chung ở index.html vào đây để dùng chung logic) ...
-
-            // --- Rút gọn cho ngắn, bạn copy y hệt từ index.html nhé ---
+            // --- Logic Dark Mode, Back to Top, Preloader (Dùng chung) ---
             const toggleBtn = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
             const body = document.body;
