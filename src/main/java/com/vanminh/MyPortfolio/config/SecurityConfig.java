@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth // Dùng authorizeHttpRequests cho Spring Boot 3
                 // CHO PHÉP MỌI NGƯỜI xem trang chủ, form liên hệ, CSS, JS, Images
-                .requestMatchers("/", "/home", "/contact", "/css/**", "/js/**", "/images/**", "/uploads/**", "/favicon.png").permitAll()
+                .requestMatchers("/", "/home", "/contact", "/css/**", "/js/**", "/images/**", "/uploads/**", "/favicon.png", "/register", "/login").permitAll()
                 //Cho phép mọi người truy cập API
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()

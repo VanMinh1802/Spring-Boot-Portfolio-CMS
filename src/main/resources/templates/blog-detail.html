@@ -2,143 +2,318 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title th:text="${post.title}">Chi tiết bài viết</title>
         <link rel="icon" type="image/png" href="/favicon.png">
 
-        <!-- CSS Libraries -->
+        <!-- Fonts & Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <!-- Font Merriweather cho nội dung bài viết (Rất dễ đọc) & Plus Jakarta Sans cho tiêu đề -->
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-        <!-- Custom CSS (Dark Mode) -->
         <style>
             :root {
-                --bg-color: #f8f9fa;
-                --text-color: #212529;
-                --card-bg: #ffffff;
+                --bg-color: #ffffff;
+                --text-color: #292929;
+                --heading-color: #1a1a1a;
+                --meta-color: #757575;
+                --accent-color: #4f46e5; /* Tím xanh */
+                --comment-bg: #f9fafb;
+                --card-border: #e5e7eb;
             }
             [data-theme="dark"] {
-                --bg-color: #121212;
-                --text-color: #e0e0e0;
-                --card-bg: #1e1e1e;
+                --bg-color: #111827; /* Đen xanh */
+                --text-color: #d1d5db;
+                --heading-color: #f9fafb;
+                --meta-color: #9ca3af;
+                --accent-color: #818cf8;
+                --comment-bg: #1f2937;
+                --card-border: #374151;
             }
+
             body {
-                font-family: 'Poppins', sans-serif;
                 background-color: var(--bg-color);
                 color: var(--text-color);
-                transition: 0.3s;
+                transition: background-color 0.3s, color 0.3s;
+                font-family: 'Plus Jakarta Sans', sans-serif; /* Font mặc định */
             }
-            .card {
-                background-color: var(--card-bg);
+
+            /* --- NAVBAR --- */
+            .navbar {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+            [data-theme="dark"] .navbar {
+                background: rgba(17, 24, 39, 0.8);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            /* --- CONTENT --- */
+            .article-container {
+                max-width: 720px; /* Chiều rộng chuẩn blog Medium */
+                margin: 0 auto;
+            }
+
+            .article-title {
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-weight: 800;
+                font-size: 2.5rem;
+                line-height: 1.2;
+                color: var(--heading-color);
+                margin-bottom: 1.5rem;
+            }
+
+            .article-meta {
+                font-size: 0.95rem;
+                color: var(--meta-color);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 2rem;
+            }
+
+            .article-cover {
+                width: 100%;
+                height: auto;
+                max-height: 450px;
+                object-fit: cover;
+                border-radius: 16px;
+                box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
+                margin-bottom: 3rem;
+            }
+
+            /* Nội dung bài viết - Dùng Font Merriweather (Serif) */
+            .article-content {
+                font-family: 'Merriweather', serif;
+                font-size: 1.125rem; /* 18px */
+                line-height: 1.8;
                 color: var(--text-color);
-                border: none;
             }
-            /* Nội dung bài viết */
-            .content-body img {
+            .article-content h2, .article-content h3 {
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-weight: 700;
+                color: var(--heading-color);
+                margin-top: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            .article-content img {
                 max-width: 100%;
                 height: auto;
                 border-radius: 8px;
+                margin: 2rem 0;
+            }
+            .article-content blockquote {
+                border-left: 4px solid var(--accent-color);
+                padding-left: 20px;
+                font-style: italic;
+                color: var(--meta-color);
+                margin: 2rem 0;
+            }
+
+            /* --- COMMENTS --- */
+            .comment-section {
+                margin-top: 4rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--card-border);
+            }
+            .comment-card {
+                background-color: var(--comment-bg);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 15px;
+                border: 1px solid var(--card-border);
+            }
+            .form-control {
+                background-color: var(--bg-color);
+                border: 1px solid var(--card-border);
+                color: var(--text-color);
+            }
+            .form-control:focus {
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            }
+
+            /* Nút quay lại */
+            .btn-back {
+                color: var(--text-color);
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                transition: color 0.2s;
+            }
+            .btn-back:hover {
+                color: var(--accent-color);
+            }
+
+            /* --- FIX LỖI FORM DARK MODE --- */
+            [data-theme="dark"] .form-control {
+                background-color: #1f2937 !important; /* Nền input sáng hơn nền web */
+                border-color: #374151 !important;     /* Viền rõ hơn */
+                color: #ffffff !important;            /* Chữ khi gõ màu trắng */
+            }
+
+            [data-theme="dark"] .form-control::placeholder {
+                color: #9ca3af !important;            /* Chữ gợi ý màu xám sáng */
+                opacity: 1;
+            }
+
+            [data-theme="dark"] .form-control:focus {
+                background-color: #111827 !important; /* Khi bấm vào thì tối lại chút cho đẹp */
+                border-color: var(--accent-color) !important;
+                box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.3) !important;
+            }
+
+            /* 1. Ép tiêu đề bài viết và link thành màu trắng sáng */
+            [data-theme="dark"] .card-title,
+            [data-theme="dark"] .card-title a {
+                color: #f8f9fa !important;
+            }
+
+            /* 2. Ép dòng chữ mờ (text-muted) thành màu xám sáng cho dễ đọc */
+            [data-theme="dark"] .text-muted {
+                color: #adb5bd !important;
+            }
+
+            /* 3. Ép nội dung mô tả thành màu trắng */
+            [data-theme="dark"] .card-text {
+                color: #e0e0e0 !important;
             }
         </style>
     </head>
     <body>
-        <!-- Navbar đơn giản -->
-        <nav class="navbar navbar-dark bg-dark mb-4 shadow">
+
+        <!-- Navbar -->
+        <nav class="navbar sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="/">My Portfolio</a>
-                <div>
-                    <a href="/blog" class="btn btn-outline-light btn-sm me-2">Quay lại Blog</a>
-                    <!-- Dark Mode Toggle -->
-                    <button class="btn btn-outline-light btn-sm border-0" id="theme-toggle"><i class="bi bi-moon-stars-fill" id="theme-icon"></i></button>
+                <a href="/blog" class="btn-back"><i class="bi bi-arrow-left"></i> Quay lại Blog</a>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a class="navbar-brand fw-bold" href="/" style="color: var(--heading-color);">My Portfolio</a>
+                    <button class="btn btn-sm border-0" id="theme-toggle" style="color: var(--text-color);">
+                        <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
+                    </button>
                 </div>
             </div>
         </nav>
 
-        <div class="container mb-5">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <!-- Ảnh bìa -->
-                    <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="w-100 rounded mb-4 shadow" style="object-fit: cover; max-height: 400px;">
+        <main class="container mt-5 mb-5">
+            <div class="article-container">
 
-                    <!-- Tiêu đề -->
-                    <h1 class="fw-bold mb-2" th:text="${post.title}">Tiêu đề</h1>
-                    <p class="text-muted mb-4">
-                        <i class="bi bi-clock"></i> Đăng ngày: <span th:text="${#temporals.format(post.createdTime, 'dd-MM-yyyy HH:mm')}"></span>
-                    </p>
+                <!-- Header Bài viết -->
+                <header>
+                    <!-- Tag/Category (Ví dụ: Technology) -->
+                    <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2">Blog Post</span>
 
-                    <!-- Tóm tắt -->
-                    <div class="alert alert-primary border-start border-4 mb-4">
-                        <strong th:text="${post.summary}"></strong>
+                    <h1 class="article-title" th:text="${post.title}">Tiêu đề bài viết</h1>
+
+                    <div class="article-meta">
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=random" class="rounded-circle" width="32">
+                            <span class="fw-bold" style="color: var(--heading-color);">Admin</span>
+                        </div>
+                        <span>•</span>
+                        <span th:text="${#temporals.format(post.createdTime, 'dd MMM, yyyy')}">Date</span>
+                        <span>•</span>
+                        <span class="text-primary fw-bold">5 min read</span>
                     </div>
+                </header>
 
-                    <!-- Nội dung chính (Render HTML) -->
-                    <div class="fs-5 lh-lg mb-5 content-body" style="white-space: pre-wrap;" th:utext="${post.content}"></div>
+                <!-- Ảnh bìa -->
+                <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="article-cover">
 
-                    <hr>
+                <!-- Nội dung chính -->
+                <article class="article-content" style="white-space: pre-wrap;" th:utext="${post.content}">
+                    Nội dung bài viết...
+                </article>
 
-                    <!-- BÌNH LUẬN -->
-                    <div class="mt-5">
-                        <h3 class="mb-4">Bình luận</h3>
-
-                        <!-- Thông báo -->
-                        <div th:if="${param.comment_success}" class="alert alert-success">
-                            Bình luận đã gửi và đang chờ duyệt.
-                        </div>
-
-                        <!-- Form -->
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title mb-3">Ý kiến của bạn</h5>
-                                <form th:action="@{/blog/{id}/comment(id=${post.id})}" th:object="${newComment}" method="POST">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <input type="text" th:field="*{name}" class="form-control mb-2" placeholder="Tên của bạn" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="email" th:field="*{email}" class="form-control" placeholder="Email (sẽ ẩn)" required>
-                                        </div>
-                                    </div>
-                                    <textarea th:field="*{content}" class="form-control mb-3" rows="3" placeholder="Viết bình luận..." required></textarea>
-                                    <button type="submit" class="btn btn-primary">Gửi bình luận</button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- List Comments -->
-                        <div th:each="cmt : ${comments}" class="d-flex mb-4 p-3 rounded" style="background-color: var(--card-bg);">
-                            <div class="flex-shrink-0">
-                                <img class="rounded-circle" src="https://ui-avatars.com/api/?background=random&name=User" width="50" />
-                            </div>
-                            <div class="ms-3">
-                                <div class="fw-bold" th:text="${cmt.name}">Name</div>
-                                <span class="text-muted small" th:text="${#temporals.format(cmt.createdDate, 'dd-MM-yyyy HH:mm')}">Date</span>
-                                <p class="mt-1 mb-0" th:text="${cmt.content}">Nội dung...</p>
-                            </div>
+                <!-- Phần Tác giả (Author Box) -->
+                <div class="card border-0 shadow-sm mt-5 mb-5" style="background: var(--comment-bg);">
+                    <div class="card-body d-flex align-items-center gap-3 p-4">
+                        <img src="/favicon.png" class="rounded-circle border" width="64" height="64"> <!-- Ảnh avatar admin -->
+                        <div>
+                            <h5 class="fw-bold mb-1" style="color: var(--heading-color);">Nguyễn Văn Minh</h5>
+                            <p class="mb-0 small text-muted">Backend Developer & Java Enthusiast. Chia sẻ kiến thức lập trình.</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Bình luận -->
+                <section class="comment-section">
+                    <h3 class="fw-bold mb-4" style="color: var(--heading-color);">Bình luận</h3>
+
+                    <!-- Thông báo -->
+                    <div th:if="${param.comment_success}" class="alert alert-success d-flex align-items-center" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <div>Bình luận của bạn đã được gửi và đang chờ kiểm duyệt.</div>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="mb-5">
+                        <form th:action="@{/blog/{id}/comment(id=${post.id})}" th:object="${newComment}" method="POST">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" th:field="*{name}" class="form-control py-3" placeholder="Tên của bạn *" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" th:field="*{email}" class="form-control py-3" placeholder="Email (Sẽ được ẩn) *" required>
+                                </div>
+                            </div>
+                            <textarea th:field="*{content}" class="form-control mb-3" rows="4" placeholder="Chia sẻ suy nghĩ của bạn..." required></textarea>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary px-4 py-2 fw-bold rounded-pill">Gửi Bình Luận</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- List -->
+                    <div th:each="cmt : ${comments}" class="comment-card">
+                        <div class="d-flex gap-3">
+                            <img class="rounded-circle mt-1" src="https://ui-avatars.com/api/?background=random&color=fff&name=User" width="40" height="40">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <h6 class="fw-bold mb-0" style="color: var(--heading-color);" th:text="${cmt.name}">Name</h6>
+                                    <small class="text-muted" th:text="${#temporals.format(cmt.createdDate, 'dd/MM/yyyy')}">Date</small>
+                                </div>
+                                <p class="mb-0" style="color: var(--text-color); line-height: 1.6;" th:text="${cmt.content}">Nội dung...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
-        </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 mt-5 border-top" style="border-color: var(--card-border) !important;">
+            <small class="text-muted">&copy; 2025 My Portfolio.</small>
+        </footer>
 
         <!-- Script Dark Mode -->
         <script>
-            // (Copy logic Dark Mode từ file trên vào đây)
             const toggleBtn = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
             const body = document.body;
             const currentTheme = localStorage.getItem('theme');
+
             if (currentTheme) {
-                body.setAttribute('data-theme', currentTheme);
+                document.documentElement.setAttribute('data-theme', currentTheme);
                 if (currentTheme === 'dark')
                     themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
             }
+
             toggleBtn.addEventListener('click', () => {
-                if (body.getAttribute('data-theme') === 'dark') {
-                    body.removeAttribute('data-theme');
+                if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
                     themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
                     localStorage.setItem('theme', 'light');
                 } else {
-                    body.setAttribute('data-theme', 'dark');
+                    document.documentElement.setAttribute('data-theme', 'dark');
                     themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
                     localStorage.setItem('theme', 'dark');
                 }
